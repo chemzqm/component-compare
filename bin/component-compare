@@ -1,0 +1,33 @@
+#! /usr/bin/env node --harmony
+
+var co = require('co');
+var fs = require('graceful-fs');
+var program = require('commander');
+var browser = require('../browser');
+var local = require('../local');
+var consoler = require('component-consoler');
+
+
+program
+  .usage('component compare [-b] [user/repo]')
+  .version('0.0.1')
+  .option('-b, --browser', 'Open with browser')
+  .parse(process.argv)
+
+//check component.json
+if (!fs.existsSync('component.json')) {
+  return consoler.fatal('component.json not exists');
+}
+
+var repo = program.args[0];
+if (repo && repo.indexOf('/') === -1) {
+  return consoler.fatal('invalid repo user name/repo format');
+}
+
+co(function*() {
+  if (!program.browser) {
+    yield local(repo);
+  } else {
+    yield browser(repo);
+  }
+})()
