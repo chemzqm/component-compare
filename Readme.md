@@ -2,6 +2,8 @@
 
 Get the diff of two versions of component from command line.
 
+By default, it checks duplicates component and prompt you to select two version for comparison.
+
 Need `colordiff` installed to show the diff in command line, on MacOS you can do
 
     brew install colordiff
