@@ -14,10 +14,6 @@ program
   .option('-b, --browser', 'Open with browser')
   .parse(process.argv)
 
-//check component.json
-if (!fs.existsSync('component.json')) {
-  return consoler.fatal('component.json not exists');
-}
 
 var repo = program.args[0];
 if (repo && repo.indexOf('/') === -1) {
@@ -26,6 +22,10 @@ if (repo && repo.indexOf('/') === -1) {
 
 co(function*() {
   if (!program.browser) {
+    //check component.json
+    if (!fs.existsSync('component.json')) {
+      return consoler.fatal('component.json not exists');
+    }
     yield local(repo);
   } else {
     yield browser(repo);
